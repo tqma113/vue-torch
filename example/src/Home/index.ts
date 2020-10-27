@@ -1,9 +1,8 @@
 import { createPage } from '../../../src'
+import View from './View.vue'
 
 const About = createPage((history, context) => {
-  return {
-    template: 'hello world'
-  }
+  return View
 })
 
 export default About

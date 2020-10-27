@@ -5,6 +5,7 @@ import ManifestPlugin from 'webpack-manifest-plugin'
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin'
 import { babelConfig } from '../../lib/config'
 import { TORCH_DIR, TORCH_CLIENT_DIR } from '../../index'
+import { VueLoaderPlugin } from 'vue-loader'
 import type { Configuration, WebpackPluginInstance } from 'webpack'
 import type { IntegralTorchConfig } from '../../index'
 
@@ -33,6 +34,7 @@ function getConfig(config: IntegralTorchConfig): Configuration {
     new ManifestPlugin(manifestPluginOption) as any,
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/ }),
     new HotModuleReplacementPlugin(),
+    new VueLoaderPlugin(),
   ]
   // TypeScript type checking
 
@@ -79,6 +81,16 @@ function getConfig(config: IntegralTorchConfig): Configuration {
           options: {
             ...babelConfig,
             cacheDirectory: true,
+          },
+        },
+        {
+          test: /\.vue$/,
+          use: {
+            loader: 'vue-loader',
+            options: {
+              // ... other options,
+              enableServerHMR: true,
+            },
           },
         },
       ],

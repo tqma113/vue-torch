@@ -29,7 +29,9 @@
   },
   "include": [
     "src",
-    "example"
+    "src/**/*.vue",
+    "example",
+    "example/**/*.vue",
   ],
   "exclude": [
     "dist"
