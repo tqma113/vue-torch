@@ -88,11 +88,11 @@ function getConfig(config: IntegralTorchConfig): Configuration {
         '@routes': config.src,
       },
       modules: ['node_modules'],
-      extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+      extensions: ['.js', '.jsx', '.json', '.ts', '.tsx', '.vue'],
     },
     resolveLoader: {
       modules: ['node_modules'],
-      extensions: ['.js', '.json', '.ts', '.jsx', '.tsx'],
+      extensions: ['.js', '.json', '.ts', '.jsx', '.tsx', '.vue'],
     },
     plugins,
   }

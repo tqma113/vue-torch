@@ -8,7 +8,7 @@ import type { IntegralTorchConfig } from '../../index'
 export default function getConfig(config: IntegralTorchConfig): Configuration {
   let entry: Record<string, string> = {
     routes: config.src,
-    document: config.document,
+    // document: config.document,
   }
 
   if (config.middleware) {
@@ -60,7 +60,7 @@ export default function getConfig(config: IntegralTorchConfig): Configuration {
     },
     resolve: {
       modules: ['node_modules'],
-      extensions: ['.js', '.jsx', '.json', '.mjs', '.ts', '.tsx'],
+      extensions: ['.js', '.jsx', '.json', '.mjs', '.ts', '.tsx', '.vue'],
     },
     externals: getExternals(config.dir),
   }

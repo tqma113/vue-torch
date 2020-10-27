@@ -1,6 +1,9 @@
 export * from './lib/page'
 export * from './lib/router'
 
+///////////////////////////////////////////////////////////////////////////////
+// CONSTANTS
+///////////////////////////////////////////////////////////////////////////////
 export enum Env {
   Development = 'development',
   Production = 'production',
@@ -34,7 +37,11 @@ export const TORCH_ROUTES_FILE_NAME = 'routes.js'
 export const TORCH_ASSETS_FILE_NAME = 'assets.json'
 export const TORCH_FAVICON_FILE_NAME = 'favicon.ico'
 
-import type { Request, Response } from 'express'
+///////////////////////////////////////////////////////////////////////////////
+// TYPES
+///////////////////////////////////////////////////////////////////////////////
+import type { Server } from 'http'
+import type { Request, Response, Application } from 'express'
 import type { Configuration } from 'webpack'
 
 export type TinyContext = {
@@ -58,6 +65,12 @@ export type TorchData = {
   context: Context
   container: string
 }
+
+export type Middleware = (app: Application, server: Server) => void
+
+export type Middlewares = {
+  assets?: Middleware
+} & Record<string, Middleware>
 
 export type TorchConfig = {
   host?: string
