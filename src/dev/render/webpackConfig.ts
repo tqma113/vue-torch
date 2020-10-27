@@ -6,7 +6,6 @@ import { VueLoaderPlugin } from 'vue-loader'
 import type { Configuration } from 'webpack'
 import type { IntegralTorchConfig } from '../../index'
 
-
 export default function getConfig(config: IntegralTorchConfig): Configuration {
   let entry: Record<string, string> = {
     routes: config.src,
@@ -65,8 +64,6 @@ export default function getConfig(config: IntegralTorchConfig): Configuration {
       extensions: ['.js', '.jsx', '.json', '.mjs', '.ts', '.tsx', '.vue'],
     },
     externals: getExternals(config.dir),
-    plugins: [
-      new VueLoaderPlugin()
-    ]
+    plugins: [new VueLoaderPlugin()],
   }
 }

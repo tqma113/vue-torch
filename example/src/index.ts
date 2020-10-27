@@ -4,7 +4,7 @@ const routes: Route[] = [
   {
     path: '/',
     module: () => import('./Home'),
-  }
+  },
 ]
 
 export default routes
