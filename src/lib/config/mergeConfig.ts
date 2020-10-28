@@ -8,7 +8,7 @@ import {
 } from '../../index'
 import type { TorchConfig, IntegralTorchConfig } from '../../index'
 
-const TITLE = 'React Torch'
+const TITLE = 'Vue Torch'
 // Tools like Cloud9 rely on this.
 const HOST = process.env.HOST || '0.0.0.0'
 const DEFAULT_DOCUMENT_PATH = path.resolve(__dirname, '../document')
