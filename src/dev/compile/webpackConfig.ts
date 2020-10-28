@@ -53,7 +53,7 @@ function getConfig(config: IntegralTorchConfig): Configuration {
         path.resolve(__dirname, '../../lib/client/index'),
       ],
     },
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-source-map',
     output: {
       path: path.join(config.dir, TORCH_DIR, TORCH_CLIENT_DIR),
       publicPath: '/__torch/',

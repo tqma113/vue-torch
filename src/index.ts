@@ -122,18 +122,3 @@ export type ScriptPreload =
       type: PreloadType.Link
       src: string
     }
-
-export type DocumentProps = {
-  title: string
-  meta: string
-  context: Context
-  publicPath: string
-  container: string
-  ssr: boolean
-  assets: {
-    vendor: string
-    index: string
-  }
-  styles?: StylePreload[]
-  scripts?: ScriptPreload[]
-}

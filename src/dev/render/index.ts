@@ -1,13 +1,14 @@
 import { createApp } from 'vue'
-import { renderToStream } from '@vue/server-renderer'
+import { renderToString } from '@vue/server-renderer'
 import { createMemoryHistory } from 'torch-history'
 import createRouter from '../../lib/router'
 import compile from './compile'
 import { createErrorElement } from '../../lib/error'
 import { Side } from '../../index'
 import { isPromise } from '../../lib/utils'
+import { createHtml } from '../../lib/document'
 import type { Request, Response, NextFunction } from 'express'
-import type { DocumentProps } from '../../index'
+import type { HtmlProps } from '../../lib/document'
 import type { Route, Router, Render } from '../../lib/router'
 import type {
   IntegralTorchConfig,
@@ -59,24 +60,25 @@ export default async function createRender(
           }
         }
         const component = await getComponent()
-        const data: DocumentProps = {
+        const app = createApp(component)
+        const content = await renderToString(app)
+        const data: HtmlProps = {
           title: config.title,
           publicPath: '/__torch/',
           context: clientContext,
           container: 'root',
           meta: '',
+          content,
           ssr: packContext.ssr,
           ...res.locals,
           assets: res.locals.assets,
           styles: res.locals.styles,
           scripts: res.locals.scripts,
         }
-        const app = createApp(component)
-        const stream = renderToStream(app, data)
+        const html = createHtml(data)
         res.status(200)
         res.setHeader('Content-type', 'text/html')
-        res.write('<!DOCTYPE html>')
-        stream.pipe(res)
+        res.end(html)
       }
     }
 
