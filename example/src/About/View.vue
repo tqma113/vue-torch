@@ -4,22 +4,18 @@
 </template>
 
 <script>
-import { store } from './store.ts'
 export default {
   data() {
-    return {}
-  },
-  computed: {
-    count () {
-      return store.state.count
+    return {
+      count: 0
     }
   },
   methods: {
     handleIncrease() {
-      store.commit('increment')
+      this.count = this.count + 1
     },
     handleDecrease() {
-      store.commit('decrement')
+      this.count = this.count - 1
     }
   }
 }

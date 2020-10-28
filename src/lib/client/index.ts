@@ -7,6 +7,8 @@ import $routes from '@routes'
 import type { Listener } from 'torch-history'
 import type { TorchData } from '../../index'
 import type { Render } from '../router'
+import type { StoreLike } from '../store'
+import type { Page } from '../page'
 
 const dataScript = document.getElementById(
   '__TORCH_DATA__'
@@ -19,7 +21,7 @@ if (dataScript) {
 
     try {
       const data: TorchData = JSON.parse(jsonStr)
-      const { context, container } = data
+      const { context, container, state } = data
 
       window.__TORCH_DATA__ = data
 
@@ -41,7 +43,8 @@ if (dataScript) {
               ssr: false,
             }
             const page = await pageCreator(history, ctx)
-            const app = createApp(page)
+            const [component, store] = getViewAndStoreFromPage(page)
+            const app = createApp(component).use(store)
             const containerElement = document.querySelector(`#${container}`)
 
             invariant(
@@ -75,7 +78,13 @@ if (dataScript) {
             pageCreator = await pageCreator
           }
           const page = await pageCreator(history, context)
-          const app = createApp(page)
+          const [component, store] = getViewAndStoreFromPage(page)
+
+          if (context.ssr) {
+            store.replaceState(state)
+          }
+
+          const app = createApp(component).use(store)
           const containerElement = document.querySelector(`#${container}`)
 
           invariant(
@@ -103,4 +112,25 @@ if (dataScript) {
 function isPromise<T, S>(obj: PromiseLike<T> | S): obj is PromiseLike<T> {
   // @ts-ignore
   return obj && obj.then && typeof obj.then === 'function'
+}
+
+function isArray<A, B, S>(input: [A, B] | S): input is [A, B] {
+  return Array.isArray(input)
+}
+
+function createNoopStore(): StoreLike<any> {
+  return {
+    subscribe: (_) => {
+      return () => {}
+    },
+    get state() {
+      return {}
+    },
+    replaceState: (_) => {},
+    install: () => {}
+  }
+}
+
+function getViewAndStoreFromPage(page: Page) {
+  return isArray(page) ? page : ([page, createNoopStore()] as const)
 }

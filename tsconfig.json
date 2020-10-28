@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "",
     "outDir": "dist",
     "declaration": true,
     "sourceMap": false,
@@ -25,7 +25,7 @@
       "dom.iterable",
       "dom"
     ],
-    "rootDir": "./src"
+    "rootDir": ""
   },
   "include": [
     "src",

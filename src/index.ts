@@ -64,6 +64,7 @@ export type Context = ClientContext | ServerContext
 export type TorchData = {
   context: Context
   container: string
+  state: object
 }
 
 export type Middleware = (app: Application, server: Server) => void

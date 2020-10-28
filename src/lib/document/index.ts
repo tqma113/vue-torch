@@ -12,6 +12,7 @@ export type HtmlProps = {
   publicPath: string
   container: string
   ssr: boolean
+  state: object,
   content: string
   assets: {
     vendor: string
@@ -21,13 +22,14 @@ export type HtmlProps = {
   scripts?: ScriptPreload[]
 }
 
-export const createHtml = ({
+const createHtml = ({
   title,
   meta,
   context,
   publicPath,
   container,
   ssr,
+  state,
   content,
   assets,
   styles = [],
@@ -36,6 +38,7 @@ export const createHtml = ({
   const data: TorchData = {
     context,
     container,
+    state
   }
 
   const styleElements = styles.map(getStyle)
@@ -82,6 +85,8 @@ export const createHtml = ({
   </html>
   `
 }
+
+export default createHtml
 
 function getStyle(style: StylePreload) {
   return style.type === 'link'

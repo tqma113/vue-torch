@@ -1,8 +1,10 @@
+import { createNoopStore } from '../store'
 import type { History } from 'torch-history'
-import type { Context } from '../../index'
 import type { Component } from 'vue'
+import type { Context } from '../../index'
+import type { StoreLike } from '../store'
 
-export type Page = Component
+export type Page = [Component, StoreLike<any>] | Component
 
 export type Creater = (
   history: History,
@@ -23,4 +25,12 @@ export function createPage(creater: Creater): PageCreater {
 
 export const isTorchPage = (input: any): input is PageCreater => {
   return typeof input === 'function' && input.symbol === TORCH_PAGE_SYMBOL
+}
+
+export const getViewAndStoreFromPage = (page: Page) => {
+  return isArray(page) ? page : ([page, createNoopStore()] as const)
+}
+
+function isArray<A, B, S>(input: [A, B] | S): input is [A, B] {
+  return Array.isArray(input)
 }

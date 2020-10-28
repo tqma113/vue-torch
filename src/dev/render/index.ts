@@ -3,6 +3,7 @@ import { renderToString } from '@vue/server-renderer'
 import { createMemoryHistory } from 'torch-history'
 import createRouter from '../../lib/router'
 import compile from './compile'
+import { getViewAndStoreFromPage } from '../../lib/page'
 import { createErrorElement } from '../../lib/error'
 import { Side } from '../../index'
 import { requireDocument, isPromise } from '../../lib/utils'
@@ -51,14 +52,16 @@ export default async function createRender(
           side: Side.Client,
         }
 
-        const getComponent = async () => {
+        const getComponentAndState = async () => {
           try {
-            return await pageCreator(history, serverContext)
+            const page = await pageCreator(history, serverContext)
+            const [component, store] = getViewAndStoreFromPage(page)
+            return [component, store.state]
           } catch (err) {
-            return createErrorElement(JSON.stringify(err))
+            return [createErrorElement(JSON.stringify(err)), {}]
           }
         }
-        const component = await getComponent()
+        const [component, state] = await getComponentAndState()
         const app = createApp(component)
         const content = await renderToString(app)
         const data: HtmlProps = {
@@ -68,6 +71,7 @@ export default async function createRender(
           container: 'root',
           meta: '',
           content,
+          state,
           ssr: packContext.ssr,
           ...res.locals,
           assets: res.locals.assets,
@@ -75,6 +79,7 @@ export default async function createRender(
           scripts: res.locals.scripts,
         }
         const createHtml = requireDocument(config)
+        console.log(createHtml)
         const html = createHtml(data)
         res.status(200)
         res.setHeader('Content-type', 'text/html')
