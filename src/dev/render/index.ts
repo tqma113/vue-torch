@@ -79,7 +79,6 @@ export default async function createRender(
           scripts: res.locals.scripts,
         }
         const createHtml = requireDocument(config)
-        console.log(createHtml)
         const html = createHtml(data)
         res.status(200)
         res.setHeader('Content-type', 'text/html')
