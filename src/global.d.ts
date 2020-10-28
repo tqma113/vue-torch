@@ -33,3 +33,8 @@ declare module 'detect-port-alt' {
   declare function detect(defaultPort: number, host: string): Promise<number>
   export = detect
 }
+
+declare module 'gulp-clean-css' {
+  declare function clean(): NodeJS.ReadWriteStream
+  export = clean
+}
