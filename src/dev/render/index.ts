@@ -5,8 +5,7 @@ import createRouter from '../../lib/router'
 import compile from './compile'
 import { createErrorElement } from '../../lib/error'
 import { Side } from '../../index'
-import { isPromise } from '../../lib/utils'
-import { createHtml } from '../../lib/document'
+import { requireDocument, isPromise } from '../../lib/utils'
 import type { Request, Response, NextFunction } from 'express'
 import type { HtmlProps } from '../../lib/document'
 import type { Route, Router, Render } from '../../lib/router'
@@ -75,6 +74,7 @@ export default async function createRender(
           styles: res.locals.styles,
           scripts: res.locals.scripts,
         }
+        const createHtml = requireDocument(config)
         const html = createHtml(data)
         res.status(200)
         res.setHeader('Content-type', 'text/html')
